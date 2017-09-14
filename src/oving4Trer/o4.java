@@ -32,8 +32,8 @@ public class o4 {
         // CircleList c2 = new CircleList(10);
         // System.out.println("10 stk, span 4, overlever: " + c2.whoSurvives(4));
 //
-        // CircleList c3 = new CircleList(10);
-        // System.out.println("10 stk, span 2, overlever: " + c3.whoSurvives(2));
+        CircleList c3 = new CircleList(10000);
+        System.out.println("overlever: " + c3.whoSurvives(12));
 
         StringStack s = new StringStack(5);
 
@@ -232,8 +232,11 @@ class CircleList{
             count++;
         }
         System.out.println("Antall if'er: " + count);
-        return (int)head.getNext().getValue(NodeType.integer);
-    }
+        return (int)head.getValue(NodeType.integer);
+        // return (int)head.getNext().getValue(NodeType.integer);
+    } // 1 +1 +1 + ((antFolk - 1)*(span*(1 + 1 + 2 + 1)) = 3 + ((antFolk - 1) * (4span) = 4spanAntFolk - 4span + 3
+    // 4nm - 4m + 3
+    //
 
     public void insert(Node last, Node insert){
         insert.setNext(last.getNext());
