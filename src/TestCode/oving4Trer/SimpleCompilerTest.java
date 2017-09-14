@@ -26,7 +26,7 @@ public class SimpleCompilerTest {
 
     @Test
     public void compile() throws Exception {
-        ArrayList<String> s = instance.compile("src/TestCode/oving4Trer/TestCompileFile.txt");
+        ArrayList<String> s = instance.compile("src/TestCode/oving4Trer/SimpleCompilerTest.java");
         for (String st: s) {
             System.out.println(st);
         }

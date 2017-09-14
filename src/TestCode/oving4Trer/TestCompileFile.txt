@@ -9,7 +9,7 @@ public class TestCompileFile {
     public TestCompileFile(int value) {
         this.value =  value;
     }
-}
+
     public TestCompileFile(String value) {
         this.value =  value;
     }
@@ -17,7 +17,7 @@ public class TestCompileFile {
         this.next = next;
     }
 
-    public Object( getValue(NodeType nodeType) {
+    public Object getValue(NodeType nodeType) {
         switch (nodeType){
             case integer:
                 return (int)value;
@@ -28,7 +28,7 @@ public class TestCompileFile {
     }
 
     public Node getNext() {
-        return next;]
+        return next;
     }
 
 }

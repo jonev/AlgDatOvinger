@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Ovinger.iml" filepath="$PROJECT_DIR$/Ovinger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AlgDatOvinger.iml" filepath="$PROJECT_DIR$/AlgDatOvinger.iml" />
     </modules>
   </component>
 </project>
