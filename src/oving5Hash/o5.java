@@ -41,8 +41,8 @@ public class o5 {
             HashTable integerHash = null;
 
 
-            for (int i = 0; i < 10; i++) {
-                integerHash = new HashTable(5000011);
+            for (int i = 0; i < 5; i++) {
+                integerHash = new HashTable(6000011);
                 t1.start();
                 for (int j = 0; j < ar1.length; j++) {
                     integerHash.hash(ar1[j]);
@@ -54,7 +54,7 @@ public class o5 {
             TimeTaking t2 = new TimeTaking(10);
 
             HashMap<Integer, Integer> hm = null;
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 5; i++) {
                 hm = new HashMap<Integer, Integer>();
                 t2.start();
                 for (int j = 0; j < ar1.length; j++) {
