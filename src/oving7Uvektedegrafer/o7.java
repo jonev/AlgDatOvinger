@@ -22,7 +22,6 @@ public class o7 {
         s.setPredecessor(0);
         LinkedList<Node> que = new LinkedList<Node>();
         que.push(s);
-        int[][] result = new int[nodetbl.length][3]; // Node/Forgjenger/Dist
 
         while (!que.isEmpty()){
             Node current = que.pollLast();
@@ -31,6 +30,28 @@ public class o7 {
                     nodetbl[edges[nabonr]].setDist(current.getDist() + 1);
                     nodetbl[edges[nabonr]].setPredecessor(current.getNr());
                     que.push(nodetbl[edges[nabonr]]);
+                }
+            }
+        }
+        return nodetbl;
+    }
+
+    public static Node[] breddeforstsok(GraphLinkedEdgelist graph, int startnode) throws Exception{
+        Node[] nodetbl = graph.getNodes();
+        Node s = nodetbl[startnode];
+        s.setDist(0);
+        s.setPredecessor(0);
+        LinkedList<Node> que = new LinkedList<Node>();
+        que.push(s);
+
+        while (!que.isEmpty()){
+            Node current = que.pollLast();
+            while (current.gotEdges()){
+                Integer edge = current.getEdge();
+                if(nodetbl[edge].getDist() == Integer.MAX_VALUE){
+                   nodetbl[edge].setDist(current.getDist() + 1);
+                   nodetbl[edge].setPredecessor(current.getNr());
+                   que.push(nodetbl[edge]);
                 }
             }
         }
@@ -194,18 +215,14 @@ class GraphLinkedEdgelist{
             for (int i = 0; i < nodes.length; i++) {
                 nodes[i] = new Node(i);
             }
-            System.out.println("init done");
 
             // read from file
             while ((line = rd.readLine()) != null){
                 String splitt[] = line.trim().split(" +|\t+");
                 int from = Integer.parseInt(splitt[0]);
                 int to = Integer.parseInt(splitt[1]);
-
-                // if(nodes[from] == null) nodes[from] = new Node(from);
                 nodes[from].addEdge(to);
                 if(!direct){
-                    //if(nodes[to] == null) nodes[to] = new Node(to);
                     nodes[to].addEdge(from);
                 }
             }

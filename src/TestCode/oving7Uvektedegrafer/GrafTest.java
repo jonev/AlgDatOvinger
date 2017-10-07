@@ -104,17 +104,4 @@ public class GrafTest {
 
     }
 
-    @Test
-    public void bfsL7Skandinavia() throws Exception {
-        GraphIndexEdgeTable L7S = new GraphIndexEdgeTable();
-        L7S.readGraphFileToNeighborList2("src/oving7Uvektedegrafer/L7Skandinavia.txt", false);
-        Node[] nodetbl = o7.breddeforstsok(L7S, 5);
-        System.out.println("Resultat av L7Skandinavia.txt ------------");
-        System.out.println("Noder: " + L7S.getNodecount() + " kanter: " + L7S.getEdgecount());
-        for (int i = 0; i < nodetbl.length-1; i++) {
-            System.out.println("Node " + nodetbl[i].getNr() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
-        }
-        System.out.println("------------------------------------");
-
-    }
 }
