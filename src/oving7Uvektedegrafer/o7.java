@@ -1,12 +1,11 @@
 package oving7Uvektedegrafer;
 
+import Misc.PriHeapNode;
 import jdk.nashorn.internal.runtime.FindProperty;
-
+import Misc.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.concurrent.ExecutionException;
 
 public class o7 {
     public static void main(String[] args) throws Exception{
@@ -47,7 +46,7 @@ public class o7 {
         while (!que.isEmpty()){
             Node current = que.pollLast();
             while (current.gotEdges()){
-                Integer edge = current.getEdge();
+                Integer edge = current.getEdge().getTo();
                 if(nodetbl[edge].getDist() == Integer.MAX_VALUE){
                    nodetbl[edge].setDist(current.getDist() + 1);
                    nodetbl[edge].setPredecessor(current.getNr());
@@ -75,7 +74,7 @@ public class o7 {
         // check each edge
         if(n.gotEdges()) {
             while (n.gotEdges()){
-                Integer edge = n.getEdge();
+                Integer edge = n.getEdge().getTo();
                 l = df_topo(nodes, nodes[edge], l);
             }
         }
@@ -194,156 +193,6 @@ class GraphIndexEdgeTable {
     }
 }
 
-class GraphLinkedEdgelist{
-    private Node[] nodes;
-    private int nodecount;
-    private int edgecount;
-
-
-    public void readGraphFileToNeighborList1(String filename, boolean direct){
-        BufferedReader rd = null;
-        FileReader fr = null;
-        try{
-            fr = new FileReader(filename);
-            rd = new BufferedReader(fr);
-
-            String line = rd.readLine().trim();
-            String[] heading = line.split(" +");
-            nodecount = Integer.parseInt(heading[0].trim());
-            edgecount = Integer.parseInt(heading[1].trim())*(direct ? 1 : 2);
-            nodes = new Node[nodecount];
-            for (int i = 0; i < nodes.length; i++) {
-                nodes[i] = new Node(i);
-            }
-
-            // read from file
-            while ((line = rd.readLine()) != null){
-                String splitt[] = line.trim().split(" +|\t+");
-                int from = Integer.parseInt(splitt[0]);
-                int to = Integer.parseInt(splitt[1]);
-                nodes[from].addEdge(to);
-                if(!direct){
-                    nodes[to].addEdge(from);
-                }
-            }
-
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally {
-            try{
-                fr.close();
-                rd.close();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void setNodes(Node[] nodes) {
-        this.nodes = nodes;
-    }
-
-    public void setNodecount(int nodecount) {
-        this.nodecount = nodecount;
-    }
-
-    public void setEdgecount(int edgecount) {
-        this.edgecount = edgecount;
-    }
-
-    public Node[] getNodes() {
-        return nodes;
-    }
-
-    public int getNodecount() {
-        return nodecount;
-    }
-
-    public int getEdgecount() {
-        return edgecount;
-    }
-
-}
 
 
 
-class Node{
-    private int dist = Integer.MAX_VALUE;
-    private int nr;
-    private int index = -1;
-    private int predecessor = -1;
-    private Node next;
-    private boolean found;
-    private LinkedList<Integer> edges;
-
-
-    public Node(int nr){
-        this.nr = nr;
-        edges = new LinkedList<>();
-    }
-    public void addEdge(Integer edge){
-        edges.push(edge);
-    }
-
-    public boolean gotEdges(){
-        return (edges.size() > 0);
-    }
-
-    public Integer getEdge(){
-        return edges.pop();
-    }
-
-    public int getPredecessor() {
-        return predecessor;
-    }
-
-    public void setPredecessor(int predecessor) {
-        this.predecessor = predecessor;
-    }
-
-    public void setDist(int dist) {
-        this.dist = dist;
-    }
-
-    public void setNr(int nr) {
-        this.nr = nr;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
-    public int getDist() {
-        return dist;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public int getNr() {
-        return nr;
-    }
-
-    public Node getNext() {
-        return next;
-    }
-
-    public boolean isFound() {
-        return found;
-    }
-
-    public void setNext(Node next) {
-        this.next = next;
-    }
-
-    public void setFound(boolean found) {
-        this.found = found;
-    }
-
-    public String getNodeList(){
-        if(next == null) return nr + " end";
-        return nr + " - " + next.getNodeList();
-    }
-}

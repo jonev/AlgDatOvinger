@@ -1,5 +1,7 @@
 package oving7Uvektedegrafer;
 
+import Misc.GraphLinkedEdgelist;
+import Misc.Node;
 import Misc.TimeTaking;
 import org.junit.After;
 import org.junit.Before;
@@ -60,5 +62,12 @@ public class GraphLinkedEdgelistTest {
         System.out.println("Utført på " + (double)t.finish()/1000000000 + " sekunder");
         System.out.println("");
         System.out.println("");
+    }
+
+    @Test
+    public void vg1Test() throws Exception {
+        GraphLinkedEdgelist g = new GraphLinkedEdgelist();
+        g.readGraphFileToNeighborList1("src/oving8VektedeGrafer/vg1.txt", true);
+
     }
 }
