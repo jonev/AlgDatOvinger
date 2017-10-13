@@ -63,12 +63,12 @@ public class HeapTest {
     public void makeHeapTest() throws Exception {
         System.out.println(instanceMin.toString());
         System.out.println(instanceMax.toString());
-        assertEquals(1, instanceMin.getPri(0));
-        assertEquals(3, instanceMin.getPri(3));
-        assertEquals(7, instanceMin.getPri(6));
-        assertEquals(9, instanceMax.getPri(0));
-        assertEquals(2, instanceMax.getPri(3));
-        assertEquals(6, instanceMax.getPri(6));
+        assertEquals(1, instanceMin.getDist(0));
+        assertEquals(3, instanceMin.getDist(3));
+        assertEquals(7, instanceMin.getDist(6));
+        assertEquals(9, instanceMax.getDist(0));
+        assertEquals(2, instanceMax.getDist(3));
+        assertEquals(6, instanceMax.getDist(6));
         checkHeapPriority(instanceMin, true);
         checkHeapPriority(instanceMax, false);
     }
@@ -119,8 +119,8 @@ public class HeapTest {
     }
 
     private void checkHeapPriority(Heap h, boolean typeMin){
-        PriHeapNode root = h.getRoot();
-        PriHeapNode last = root;
+        Node root = h.getRoot();
+        Node last = root;
         while (root != null){
             if(typeMin){
                 if(root.getIntPri() < last.getIntPri()){

@@ -5,8 +5,8 @@ import java.util.LinkedList;
 /**
  * @author jonev on 07.10.2017.
  */
-public class Node implements PriHeapNode{
-    private int dist = Integer.MAX_VALUE;
+public class Node{
+    private int dist = 2000000;
     private int nr;
     private int index = -1;
     private int predecessor = -1;
@@ -21,10 +21,10 @@ public class Node implements PriHeapNode{
         edges = new LinkedList<>();
     }
 
-    public Node(int nr, int pri){
+    public Node(int nr, int dist){
         this.nr = nr;
         edges = new LinkedList<>();
-        this.pri = pri;
+        this.dist = dist;
     }
     public void addEdge(Edge edge){
         edges.push(edge);
@@ -48,10 +48,6 @@ public class Node implements PriHeapNode{
 
     public void setDist(int dist) {
         this.dist = dist;
-    }
-
-    public void setNr(int nr) {
-        this.nr = nr;
     }
 
     public void setIndex(int index) {
@@ -86,12 +82,12 @@ public class Node implements PriHeapNode{
         this.found = found;
     }
 
-    @Override
+
     public int getIntPri() {
         return pri;
     }
 
-    @Override
+
     public void setIntPri(int priority) {
         pri = priority;
     }

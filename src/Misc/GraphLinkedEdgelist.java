@@ -26,6 +26,7 @@ public class GraphLinkedEdgelist{
             nodes = new Node[nodecount];
             for (int i = 0; i < nodes.length; i++) {
                 nodes[i] = new Node(i);
+                nodes[i].setIndex(i);
             }
 
             // read from file

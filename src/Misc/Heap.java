@@ -1,36 +1,44 @@
 package Misc;
 
-import com.sun.org.apache.xml.internal.security.encryption.CipherReference;
-
 /**
  * @author jonev on 07.10.2017.
  */
 public class Heap {
-    private PriHeapNode[] nodes;
+    private Node[] nodes;
     private boolean typeMin;
     private int nrOfNodeIn = 0;
+    private int antfix = 0;
 
     public Heap(int nrOfNodes, boolean typeMin){
-        nodes = new PriHeapNode[nrOfNodes];
+        nodes = new Node[nrOfNodes];
         this.typeMin = typeMin;
 
+    }
+
+    public Node[] getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(Node[] nodes) {
+        this.nodes = nodes;
+        this.nrOfNodeIn = nodes.length;
     }
 
     public boolean isEmpty(){
         return (nrOfNodeIn < 1);
     }
 
-    public PriHeapNode addNodeBeforeMake(int nr, int pri){
-        nodes[nrOfNodeIn++] = new Node(nr, pri);
+    public Node addNodeBeforeMake(int nr, int dist){
+        nodes[nrOfNodeIn++] = new Node(nr, dist);
         return nodes[nrOfNodeIn-1];
     }
 
-    public void addNode(int nr, int pri){
-        nodes[nrOfNodeIn++] = new Node(nr, pri);
+    public void addNode(int nr, int dist){
+        nodes[nrOfNodeIn++] = new Node(nr, dist);
         fixHeap(nrOfNodeIn-1);
     }
 
-    public void addNode(PriHeapNode node){
+    public void addNode(Node node){
         try {
             nodes[nrOfNodeIn++] = node;
             fixHeap(nrOfNodeIn - 1);
@@ -46,48 +54,67 @@ public class Heap {
         }
     }
 
-    public int getPri(int i){
+    public void setDist(int index, int dist){
+        nodes[index].setDist(dist);
+    }
+
+
+    public void setPredecessor(int index, int pre){
+        nodes[index].setPredecessor(pre);
+    }
+    public int getPredecessor(int index){
+        return nodes[index].getPredecessor();
+    }
+
+    public int getDist(int i){
         if(typeMin){
-            return (i < nrOfNodeIn) ? nodes[i].getIntPri() : Integer.MAX_VALUE;
+            return (i < nrOfNodeIn) ? nodes[i].getDist() : Integer.MAX_VALUE;
         }else {
-            return (i < nrOfNodeIn) ? nodes[i].getIntPri() : Integer.MIN_VALUE;
+            return (i < nrOfNodeIn) ? nodes[i].getDist() : Integer.MIN_VALUE;
         }
     }
 
-    private void fixHeap(int i){
+    public void fixHeap(int i){ // todo oppdatere nr til noden til å matche indexen i tabellen, hver gang en node flyttes
+        antfix++;
         if(typeMin){ // min heap
-            if(getPri(getParentIndex(i)) > getPri(i)){
+            if(getDist(getParentIndex(i)) > getDist(i)){
                 switchPlace(i, getParentIndex(i));
                 fixHeap(getParentIndex(i));
             }
-            if(getPri(i) > getPri(getFirstChildIndex(i))){
+            if(getDist(i) > getDist(getFirstChildIndex(i))){
                 switchPlace(i, getFirstChildIndex(i));
                 fixHeap(getFirstChildIndex(i));
             }
-            if(getPri(i) > getPri(getSecondChildIndex(i))){
+            if(getDist(i) > getDist(getSecondChildIndex(i))){
                 switchPlace(i, getSecondChildIndex(i));
                 fixHeap(getSecondChildIndex(i));
             }
         }else{ // max heap
-            if(getPri(getParentIndex(i)) < getPri(i)){
+            if(getDist(getParentIndex(i)) < getDist(i)){
                 switchPlace(i, getParentIndex(i));
                 fixHeap(getParentIndex(i));
             }
-            if(getPri(i) < getPri(getFirstChildIndex(i))){
+            if(getDist(i) < getDist(getFirstChildIndex(i))){
                 switchPlace(i, getFirstChildIndex(i));
                 fixHeap(getFirstChildIndex(i));
             }
-            if(getPri(i) < getPri(getSecondChildIndex(i))){
+            if(getDist(i) < getDist(getSecondChildIndex(i))){
                 switchPlace(i, getSecondChildIndex(i));
                 fixHeap(getSecondChildIndex(i));
             }
         }
     }
 
-    public PriHeapNode getRoot(){
+    public int getAntfix() {
+        return antfix;
+    }
+
+    public Node getRoot(){
         if(nrOfNodeIn < 1) return null;
-        PriHeapNode root = nodes[0];
+        Node root = nodes[0];
         nodes[0] = nodes[nrOfNodeIn-1];
+        nodes[0].setIndex(0);
+        nodes[nrOfNodeIn-1] = null; // no need, just for view
         nrOfNodeIn--;
         fixHeap(0);
         return root;
@@ -100,11 +127,13 @@ public class Heap {
     }
 
     private void switchPlace(int i, int j){
-        PriHeapNode n = nodes[i];
+        Node n = nodes[i];
         // System.out.println("Bytter, setter fra: " + i + " pri: " + n.getIntPri() + " til: " + j);
         // System.out.println("Bytter, setter fra: " + j + " pri: " + nodes[j].getIntPri() + " til: " + i);
         nodes[i] = nodes[j];
         nodes[j] = n;
+        nodes[i].setIndex(i);
+        nodes[j].setIndex(j);
     }
 
     private int getParentIndex(int child){
@@ -131,7 +160,7 @@ public class Heap {
         // }
         String s = (typeMin) ? "Min: " : "Max: ";
         for (int i = 0; i < nrOfNodeIn; i++) {
-            s += nodes[i].getIntPri() + " ; ";
+            s += nodes[i].getDist() + " ; ";
         }
         return s;
     }
