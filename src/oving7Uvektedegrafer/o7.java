@@ -1,7 +1,5 @@
 package oving7Uvektedegrafer;
 
-import Misc.PriHeapNode;
-import jdk.nashorn.internal.runtime.FindProperty;
 import Misc.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,16 +16,16 @@ public class o7 {
         int[] edges = graph.getEdgeTbl();
         Node s = nodetbl[startnode];
         s.setDist(0);
-        s.setPredecessor(0);
+        s.setPredecessor("This is the startnode");
         LinkedList<Node> que = new LinkedList<Node>();
         que.push(s);
 
         while (!que.isEmpty()){
             Node current = que.pollLast();
-            for (int nabonr = current.getIndex(); nabonr < nodetbl[current.getNr()+1].getIndex(); nabonr++) {
+            for (int nabonr = current.getIndex(); nabonr < nodetbl[current.getIndex()+1].getIndex(); nabonr++) {
                 if(nodetbl[edges[nabonr]].getDist() == Integer.MAX_VALUE){
                     nodetbl[edges[nabonr]].setDist(current.getDist() + 1);
-                    nodetbl[edges[nabonr]].setPredecessor(current.getNr());
+                    nodetbl[edges[nabonr]].setPredecessor(current.getNodename());
                     que.push(nodetbl[edges[nabonr]]);
                 }
             }
@@ -39,7 +37,7 @@ public class o7 {
         Node[] nodetbl = graph.getNodes();
         Node s = nodetbl[startnode];
         s.setDist(0);
-        s.setPredecessor(0);
+        s.setPredecessor("This is the startnode");
         LinkedList<Node> que = new LinkedList<Node>();
         que.push(s);
 
@@ -49,7 +47,7 @@ public class o7 {
                 Integer edge = current.getEdge().getTo();
                 if(nodetbl[edge].getDist() == Integer.MAX_VALUE){
                    nodetbl[edge].setDist(current.getDist() + 1);
-                   nodetbl[edge].setPredecessor(current.getNr());
+                   nodetbl[edge].setPredecessor(current.getNodename());
                    que.push(nodetbl[edge]);
                 }
             }
@@ -131,7 +129,7 @@ class GraphIndexEdgeTable {
             edgeTbl = new int[unsortedEdgTbl.length];
             int edgetblindex = 0;
             for (int nodenrindex = 0; nodenrindex < nodecount; nodenrindex++) { // for each node
-                indexInEdgeTbl[nodenrindex] = new Node(nodenrindex);
+                indexInEdgeTbl[nodenrindex] = new Node(nodenrindex+"");
                 indexInEdgeTbl[nodenrindex].setIndex(edgetblindex);
                 hasEdge = false;
                 for (int edgeindex = 0; edgeindex < edgecount; edgeindex++) { // collection all edges for that node
@@ -146,7 +144,7 @@ class GraphIndexEdgeTable {
                 }
             }
             // adding dummynode
-            indexInEdgeTbl[nodecount] = new Node(-1);
+            indexInEdgeTbl[nodecount] = new Node("Dummynode");
             indexInEdgeTbl[nodecount].setDist(-1);
             indexInEdgeTbl[nodecount].setIndex(edgecount);
 

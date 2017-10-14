@@ -37,26 +37,26 @@ public class HeapTest {
     }
 
     private void addTestNodes(){
-        instanceMin.addNodeBeforeMake(0, 1);
-        instanceMax.addNodeBeforeMake(0, 1);
+        instanceMin.addNodeBeforeMake(0 + "", 1);
+        instanceMax.addNodeBeforeMake(0 + "", 1);
 
-        instanceMin.addNodeBeforeMake(1, 3);
-        instanceMax.addNodeBeforeMake(1, 3);
+        instanceMin.addNodeBeforeMake(1 + "", 3);
+        instanceMax.addNodeBeforeMake(1 + "", 3);
 
-        instanceMin.addNodeBeforeMake(2, 7);
-        instanceMax.addNodeBeforeMake(2, 7);
+        instanceMin.addNodeBeforeMake(2 + "", 7);
+        instanceMax.addNodeBeforeMake(2 + "", 7);
 
-        instanceMin.addNodeBeforeMake(3, 2);
-        instanceMax.addNodeBeforeMake(3, 2);
+        instanceMin.addNodeBeforeMake(3 + "", 2);
+        instanceMax.addNodeBeforeMake(3 + "", 2);
 
-        instanceMin.addNodeBeforeMake(4, 9);
-        instanceMax.addNodeBeforeMake(4, 9);
+        instanceMin.addNodeBeforeMake(4 + "", 9);
+        instanceMax.addNodeBeforeMake(4 + "", 9);
 
-        instanceMin.addNodeBeforeMake(5, 8);
-        instanceMax.addNodeBeforeMake(5, 8);
+        instanceMin.addNodeBeforeMake(5 + "", 8);
+        instanceMax.addNodeBeforeMake(5 + "", 8);
 
-        instanceMin.addNodeBeforeMake(6, 6);
-        instanceMax.addNodeBeforeMake(6, 6);
+        instanceMin.addNodeBeforeMake(6 + "", 6);
+        instanceMax.addNodeBeforeMake(6 + "", 6);
     }
 
     @Test
@@ -76,8 +76,8 @@ public class HeapTest {
     @Test
     public void getRootTest() throws Exception {
 
-        assertEquals(1, instanceMin.getRoot().getIntPri());
-        assertEquals(9, instanceMax.getRoot().getIntPri());
+        assertEquals(1, instanceMin.getRoot().getDist());
+        assertEquals(9, instanceMax.getRoot().getDist());
 
         System.out.println(instanceMin.toString());
         System.out.println(instanceMax.toString());
@@ -87,16 +87,16 @@ public class HeapTest {
     @Test
     public void changePriorityTest() throws Exception {
         // System.out.println(instanceMax.toString());
-        instanceMax.changePriority(0, 5);
-        instanceMax.changePriority(4, 88);
-        instanceMax.changePriority(2, 2);
-        instanceMax.changePriority(0, 4);
+        instanceMax.changeDistance(0, 5);
+        instanceMax.changeDistance(4, 88);
+        instanceMax.changeDistance(2, 2);
+        instanceMax.changeDistance(0, 4);
         // System.out.println(instanceMax.toString());
         // System.out.println(instanceMax.toString());
-        instanceMax.changePriority(3, 9);
-        instanceMax.changePriority(2, 1);
-        instanceMax.changePriority(5, 11);
-        instanceMax.changePriority(6, 3);
+        instanceMax.changeDistance(3, 9);
+        instanceMax.changeDistance(2, 1);
+        instanceMax.changeDistance(5, 11);
+        instanceMax.changeDistance(6, 3);
         // System.out.println(instanceMax.toString());
 
 
@@ -107,12 +107,12 @@ public class HeapTest {
 
     @Test
     public void addNodeTest() throws Exception {
-        instanceMax.addNode(100, 7);
+        instanceMax.addNode(100 + "", 7);
         System.out.println(instanceMax.toString());
-        instanceMax.addNode(101, 11);
+        instanceMax.addNode(101 + "", 11);
         System.out.println(instanceMax.toString());
 
-        instanceMax.addNode(100, 4);
+        instanceMax.addNode(100 + "", 4);
         System.out.println(instanceMax.toString());
         checkHeapPriority(instanceMax, false);
 
@@ -123,11 +123,11 @@ public class HeapTest {
         Node last = root;
         while (root != null){
             if(typeMin){
-                if(root.getIntPri() < last.getIntPri()){
+                if(root.getDist() < last.getDist()){
                     assertTrue(false);
                 }
             } else {
-                if(root.getIntPri() > last.getIntPri()){
+                if(root.getDist() > last.getDist()){
                     assertTrue(false);
                 }
             }

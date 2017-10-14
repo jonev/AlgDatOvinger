@@ -3,31 +3,32 @@ package Misc;
 import java.util.LinkedList;
 
 /**
- * @author jonev on 07.10.2017.
+ * @author jonev on 14.10.2017.
  */
-public class Node{
-    private int dist = 2000000;
-    private int nr;
+public class Node implements Comparable<Node>{
+    private int dist = 1000000;
+    private String nodename;
     private int index = -1;
-    private int predecessor = -1;
+    private String predecessor = "No one";
+    private LinkedList<Edge> edges;
     private Node next;
     private boolean found;
-    private LinkedList<Edge> edges;
-    private int pri;
 
-
-    public Node(int nr){
-        this.nr = nr;
-        edges = new LinkedList<>();
-    }
-
-    public Node(int nr, int dist){
-        this.nr = nr;
+    public Node(String nodename, int dist){
+        this.nodename = nodename;
         edges = new LinkedList<>();
         this.dist = dist;
     }
+    public Node(String nodename){
+        this.nodename = nodename;
+        edges = new LinkedList<>();
+    }
     public void addEdge(Edge edge){
         edges.push(edge);
+    }
+
+    public LinkedList<Edge> getEdges() {
+        return edges;
     }
 
     public boolean gotEdges(){
@@ -38,11 +39,11 @@ public class Node{
         return edges.pop();
     }
 
-    public int getPredecessor() {
+    public String getPredecessor() {
         return predecessor;
     }
 
-    public void setPredecessor(int predecessor) {
+    public void setPredecessor(String predecessor) {
         this.predecessor = predecessor;
     }
 
@@ -62,8 +63,8 @@ public class Node{
         return index;
     }
 
-    public int getNr() {
-        return nr;
+    public String getNodename() {
+        return nodename;
     }
 
     public Node getNext() {
@@ -82,18 +83,18 @@ public class Node{
         this.found = found;
     }
 
-
-    public int getIntPri() {
-        return pri;
-    }
-
-
-    public void setIntPri(int priority) {
-        pri = priority;
-    }
-
     public String getNodeList(){
-        if(next == null) return nr + " end";
-        return nr + " - " + next.getNodeList();
+        if(next == null) return nodename;
+        return nodename + " - " + next.getNodeList();
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        if(o == null) return 1;
+        if(dist > o.dist){
+            return 1;
+        } else if(dist < o.dist){
+            return -1;
+        } else return 0;
     }
 }

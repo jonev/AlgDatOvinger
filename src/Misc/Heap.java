@@ -28,13 +28,13 @@ public class Heap {
         return (nrOfNodeIn < 1);
     }
 
-    public Node addNodeBeforeMake(int nr, int dist){
-        nodes[nrOfNodeIn++] = new Node(nr, dist);
+    public Node addNodeBeforeMake(String nodename, int dist){
+        nodes[nrOfNodeIn++] = new Node(nodename, dist);
         return nodes[nrOfNodeIn-1];
     }
 
-    public void addNode(int nr, int dist){
-        nodes[nrOfNodeIn++] = new Node(nr, dist);
+    public void addNode(String nodename, int dist){
+        nodes[nrOfNodeIn++] = new Node(nodename, dist);
         fixHeap(nrOfNodeIn-1);
     }
 
@@ -59,10 +59,10 @@ public class Heap {
     }
 
 
-    public void setPredecessor(int index, int pre){
+    public void setPredecessor(int index, String pre){
         nodes[index].setPredecessor(pre);
     }
-    public int getPredecessor(int index){
+    public String getPredecessor(int index){
         return nodes[index].getPredecessor();
     }
 
@@ -120,9 +120,9 @@ public class Heap {
         return root;
     }
 
-    public void changePriority(int i, int newPriority){
+    public void changeDistance(int i, int newDist){
         if(i >= nrOfNodeIn) return;
-        nodes[i].setIntPri(newPriority);
+        nodes[i].setDist(newDist);
         fixHeap(getParentIndex(i));
     }
 

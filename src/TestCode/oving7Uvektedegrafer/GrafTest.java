@@ -24,7 +24,7 @@ public class GrafTest {
         instance.readGraphFileToNeighborList2("src/oving7Uvektedegrafer/testgraph.txt", false);
         Node[] nodetbl = o7.breddeforstsok(instance, 5);
         for (int i = 0; i < nodetbl.length; i++) {
-            System.out.println("Node " + nodetbl[i].getNr() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
+            System.out.println("Node " + nodetbl[i].getNodename() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
         }
 
         assertEquals(2, nodetbl[0].getPredecessor());
@@ -54,7 +54,7 @@ public class GrafTest {
         System.out.println(L7g1.toString());
         System.out.println("Resultat av L7g1.txt ------------");
         for (int i = 0; i < nodetbl.length-1; i++) {
-            System.out.println("Node " + nodetbl[i].getNr() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
+            System.out.println("Node " + nodetbl[i].getNodename() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
         }
         System.out.println("------------------------------------");
 
@@ -69,7 +69,7 @@ public class GrafTest {
         System.out.println("Resultat av L7g2.txt ------------");
         System.out.println("Noder: " + L7g2.getNodecount() + " kanter: " + L7g2.getEdgecount());
         for (int i = 0; i < nodetbl.length; i++) {
-            System.out.println("Node " + nodetbl[i].getNr() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
+            System.out.println("Node " + nodetbl[i].getNodename() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
         }
         System.out.println("------------------------------------");
 
@@ -84,7 +84,7 @@ public class GrafTest {
         System.out.println("Resultat av L7g3.txt ------------");
         System.out.println("Noder: " + L7g3.getNodecount() + " kanter: " + L7g3.getEdgecount());
         for (int i = 0; i < nodetbl.length-1; i++) {
-            System.out.println("Node " + nodetbl[i].getNr() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
+            System.out.println("Node " + nodetbl[i].getNodename() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
         }
         System.out.println("------------------------------------");
 
@@ -99,7 +99,7 @@ public class GrafTest {
         System.out.println("Resultat av L7g5.txt ------------");
         System.out.println("Noder: " + L7g5.getNodecount() + " kanter: " + L7g5.getEdgecount());
         for (int i = 0; i < nodetbl.length-1; i++) {
-            System.out.println("Node " + nodetbl[i].getNr() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
+            System.out.println("Node " + nodetbl[i].getNodename() + " forgjenger " + nodetbl[i].getPredecessor() + " dist " + nodetbl[i].getDist());
         }
         System.out.println("------------------------------------");
 
