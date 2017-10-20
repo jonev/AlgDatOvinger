@@ -1,5 +1,9 @@
 package oving9Relasjoner;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class o9 {
 
     /*
@@ -44,12 +48,14 @@ public class o9 {
             tran = true;
             char a = relation[i][0];
             char b = relation[i][1];
+            System.out.println("Sjekker: " + a + " til " + b);
             char c = ' ';
 
             if(a==b) continue;
             for (int j = 0; j < relation.length; j++) {
                 if (relation[j][0] == b && relation[j][1] != a) {
                     c = relation[j][1];
+                    System.out.println("fant: " + b + " til " + c);
                     break;
                 }
             }
@@ -57,6 +63,7 @@ public class o9 {
             tran = false;
             for (int k = 0; k < relation.length; k++) {
                 if (relation[k][0] == a && relation[k][1] == c) {
+                    System.out.println("fant: " + a + " til " + c);
                     tran = true;
                     break;
                 }
@@ -67,15 +74,26 @@ public class o9 {
     }
 
     public static boolean isAntiSymmetric(char[][] relation, char [] set){
-        return false;
+        for (int i = 0; i < relation.length; i++) {
+            char a = relation[i][0];
+            char b = relation[i][1];
+            if(a == b) continue;
+            for (int j = 0; j < relation.length; j++) {
+                if(relation[j][0] == b && relation[j][1] == a){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static boolean isEquivalenceRelation(char[][] relation, char [] set){
-        return false;
+        return (isReflexive(relation, set) && isSymmetric(relation, set) && isTransitive(relation, set));
     }
 
+
     public static boolean isPartialOrder(char[][] relation, char [] set){
-        return false;
+        return (isReflexive(relation, set) && isAntiSymmetric(relation, set) && isTransitive(relation, set));
     }
 
     public static void main(String[] args) {
