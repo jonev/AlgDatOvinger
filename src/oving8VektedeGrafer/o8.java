@@ -1,8 +1,6 @@
 package oving8VektedeGrafer;
 
 import Misc.*;
-import com.sun.deploy.panel.WinUpdatePanel;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -35,7 +33,6 @@ public class o8 {
         PriorityQueue<Node> queue = new PriorityQueue<Node>(nodes);
 
         Node node = queue.poll();
-        node.setDist(0);
         while (node != null){
             Edge[] edges = node.getEdges().toArray(new Edge[node.getEdges().size()]);
             for (Edge e : edges){

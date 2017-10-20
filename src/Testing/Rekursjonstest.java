@@ -1,7 +1,5 @@
 package Testing;
 
-import org.omg.CORBA.Current;
-import sun.util.resources.cldr.ebu.CurrencyNames_ebu;
 
 /**
  * Created by JoneSkole on 21.08.2017.

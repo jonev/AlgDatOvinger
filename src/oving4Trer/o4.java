@@ -1,12 +1,5 @@
 package oving4Trer;
 
-import Misc.TimeTaking;
-import com.sun.javaws.exceptions.InvalidArgumentException;
-import org.w3c.dom.ls.LSException;
-
-import javax.sound.midi.Soundbank;
-import javax.swing.text.DefaultEditorKit;
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
