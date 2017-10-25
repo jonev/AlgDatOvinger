@@ -48,14 +48,14 @@ public class o9 {
             tran = true;
             char a = relation[i][0];
             char b = relation[i][1];
-            System.out.println("Sjekker: " + a + " til " + b);
+            //System.out.println("Sjekker: " + a + " til " + b);
             char c = ' ';
 
             if(a==b) continue;
             for (int j = 0; j < relation.length; j++) {
                 if (relation[j][0] == b && relation[j][1] != a) {
                     c = relation[j][1];
-                    System.out.println("fant: " + b + " til " + c);
+                    //System.out.println("fant: " + b + " til " + c);
                     break;
                 }
             }
@@ -63,7 +63,7 @@ public class o9 {
             tran = false;
             for (int k = 0; k < relation.length; k++) {
                 if (relation[k][0] == a && relation[k][1] == c) {
-                    System.out.println("fant: " + a + " til " + c);
+                    //System.out.println("fant: " + a + " til " + c);
                     tran = true;
                     break;
                 }
