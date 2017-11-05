@@ -11,9 +11,14 @@ public class HuffmanOnString {
     private int[] nrOfTimesUsed;
     private HuffmanOnStringNode huffmantree;
     private int currentmaxTimesUsed = 0;
+    private HashMap<Byte, Short> byteVaulesCodes = new HashMap<>();
 
     public HuffmanOnString() {
         nrOfTimesUsed = new int[256];
+    }
+
+    public HuffmanOnStringNode getHuffmantree() {
+        return huffmantree;
     }
 
     public void read(char c){
@@ -54,7 +59,28 @@ public class HuffmanOnString {
         huffmantree = startlist.poll();
         updateCode(huffmantree.getLeft(), (short)(0b0));
         updateCode(huffmantree.getRight(), (short)(0b1));
-        System.out.println("");
+
+        HuffmanOnStringNode l = huffmantree.getLeft();
+        HuffmanOnStringNode r = huffmantree.getRight();
+
+        putToHashmap(huffmantree);
+
+    }
+
+    private void putToHashmap(HuffmanOnStringNode n){
+        if(n.getValue() != -1){
+            byteVaulesCodes.put(n.getValue(), n.getCode());
+        }
+        if(n.getLeft() != null){
+            putToHashmap(n.getLeft());
+        }
+        if(n.getRight() != null){
+            putToHashmap(n.getRight());
+        }
+    }
+
+    public HashMap<Byte, Short> getByteVaulesCodes() {
+        return byteVaulesCodes;
     }
 
     private void updateCode(HuffmanOnStringNode h, short code){
@@ -71,7 +97,14 @@ public class HuffmanOnString {
         short s = (short)c;
         byte b1 = (byte)(s & 0b11111111);
         byte b2 = (byte)(s >> 8);
+        short s1 = byteVaulesCodes.get(b1);
+        short s2 = byteVaulesCodes.get(b2);
+        int u1 = 32 - Integer.numberOfLeadingZeros(s1);
+        int u2 = 32 - Integer.numberOfLeadingZeros(s2);
+        byte[] b = new byte[100];
+
     }
+
 
 
 
@@ -135,13 +168,24 @@ class HuffmanOnStringNode implements Comparable<HuffmanOnStringNode>{
         } else if(nrOfUses > o.nrOfUses){
             return 1;
         } else {
-            return -1;
+            if(value > o.value){
+                return -1;
+            } else if(value < o.value){
+                return 1;
+            } else return 0;
         }
 
     }
 
     @Override
     public String toString(){
-        return nrOfUses + " ";
+        String s = "NrOfUse:" + nrOfUses + " code: " + code;
+        if(left != null){
+            s += ", " + left.toString();
+        }
+        if(right != null){
+            s += ", " + right.toString();
+        }
+        return s;
     }
 }

@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 /**
@@ -29,6 +31,13 @@ public class HuffmanOnStringTest {
             h.read(c);
         }
         h.makeTree();
-
+        String s1 = h.getHuffmantree().toString();
+        System.out.println(s1);
+        HashMap<Byte, Short> byteVaulesCodes = h.getByteVaulesCodes();
+        for(Byte b: byteVaulesCodes.keySet()){
+            String key = b.toString();
+            String value = Integer.toBinaryString(0xFFFF & byteVaulesCodes.get(b));
+            System.out.println("Byte value: " + key + " code: " + value);
+        }
     }
 }
