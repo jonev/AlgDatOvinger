@@ -32,7 +32,7 @@ public class GraphLinkedEdgelist{
                 nodes[i].setIndex(i);
             }
 
-            // read from file
+            // initHuffmantree from file
             while ((line = rd.readLine()) != null){
                 String splitt[] = line.trim().split(" +|\t+");
                 int from = Integer.parseInt(splitt[0]);
@@ -74,7 +74,7 @@ public class GraphLinkedEdgelist{
                 nodelst.get(i).setIndex(i);
             }
 
-            // read from file
+            // initHuffmantree from file
             while ((line = rd.readLine()) != null){
                 String splitt[] = line.trim().split(" +|\t+");
                 int from = Integer.parseInt(splitt[0]);

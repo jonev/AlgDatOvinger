@@ -1,8 +1,8 @@
 package oving12Kompresjon;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @author jonev on 03.11.2017.
@@ -11,7 +11,9 @@ public class HuffmanOnString {
     private int[] nrOfTimesUsed;
     private HuffmanOnStringNode huffmantree;
     private int currentmaxTimesUsed = 0;
-    private HashMap<Byte, Short> byteVaulesCodes = new HashMap<>();
+    private HashMap<Integer, Integer> byteVaulesCodes = new HashMap<>();
+    private HashMap<Integer, Integer> codeVaulesBytes= new HashMap<>();
+    private LinkedBlockingDeque<Byte> que = new LinkedBlockingDeque<>();
 
     public HuffmanOnString() {
         nrOfTimesUsed = new int[256];
@@ -21,10 +23,21 @@ public class HuffmanOnString {
         return huffmantree;
     }
 
-    public void read(char c){
+    public void initHuffmantree(char[] lstc){
+        for(char c:lstc){
+            initHuffmantree(c);
+        }
+        makeTree();
+    }
+
+    private void initHuffmantree(char c){
         short s = (short)c;
         byte b1 = (byte)(s & 0b11111111);
+        //String value = Integer.toBinaryString(0xFFFF & b1);
+        //System.out.println("Byte value: " + c + " code1: " + value);
         byte b2 = (byte)(s >> 8);
+        //value = Integer.toBinaryString(0xFFFF & b2);
+        //System.out.println("Byte value: " + c + " code2: " + value);
         nrOfTimesUsed[b1]++;
         nrOfTimesUsed[b2]++;
         if(nrOfTimesUsed[b1] > currentmaxTimesUsed){
@@ -35,7 +48,23 @@ public class HuffmanOnString {
         }
     }
 
-    public void makeTree(){
+    public void initHuffmantree(byte[] lstb){
+        for(byte b:lstb){
+            initHuffmantree(b);
+        }
+        makeTree();
+    }
+    private void initHuffmantree(byte b){
+        int i = b;
+        i = i & 0b00000000000000000000000011111111 ;
+        System.out.println(i);
+        nrOfTimesUsed[i]++;
+        if(nrOfTimesUsed[i] > currentmaxTimesUsed){
+            currentmaxTimesUsed = nrOfTimesUsed[i];
+        }
+    }
+
+    private void makeTree(){
         PriorityQueue<HuffmanOnStringNode> startlist = new PriorityQueue<>();
         for (int i = 0; i < nrOfTimesUsed.length; i++) {
             if(nrOfTimesUsed[i] > 0){
@@ -60,9 +89,6 @@ public class HuffmanOnString {
         updateCode(huffmantree.getLeft(), (short)(0b0));
         updateCode(huffmantree.getRight(), (short)(0b1));
 
-        HuffmanOnStringNode l = huffmantree.getLeft();
-        HuffmanOnStringNode r = huffmantree.getRight();
-
         putToHashmap(huffmantree);
 
     }
@@ -79,7 +105,7 @@ public class HuffmanOnString {
         }
     }
 
-    public HashMap<Byte, Short> getByteVaulesCodes() {
+    public HashMap<Integer, Integer> getByteVaulesCodes() {
         return byteVaulesCodes;
     }
 
@@ -93,27 +119,68 @@ public class HuffmanOnString {
         }
     }
 
-    public void compress(char c){
-        short s = (short)c;
-        byte b1 = (byte)(s & 0b11111111);
-        byte b2 = (byte)(s >> 8);
-        short s1 = byteVaulesCodes.get(b1);
-        short s2 = byteVaulesCodes.get(b2);
-        int u1 = 32 - Integer.numberOfLeadingZeros(s1);
-        int u2 = 32 - Integer.numberOfLeadingZeros(s2);
-        byte[] b = new byte[100];
+
+    public void compress(char[] lstc){
+        byte[] b = new byte[lstc.length*2];
+        int index = 0;
+        for(char c:lstc){
+            int s = (short)c;
+            b[index] = (byte)(s & 0b11111111);
+            b[index+1] = (byte)(s >> 8);
+            index += 2;
+        }
+        compress(b);
 
     }
 
+    public void compress(byte[] lstb){
+        int codeForByte;
+        byte nrOfBitsInUse;
+        byte buffer = 0;
+        byte usedInBuffer = 0;
+        byte overloadbytes = 0;
+        for(byte b:lstb){
+            codeForByte = byteVaulesCodes.get((int)b);
+            nrOfBitsInUse = (byte)(32 - Integer.numberOfLeadingZeros(codeForByte));
+            if(codeForByte == 0){
+                usedInBuffer++;
+                continue;
+            }
+            byte switchvalue = (byte)(8-usedInBuffer-nrOfBitsInUse);
+            if(switchvalue < 0){
+                // finner ut hvor mange bit man trenger i neste byte
+                overloadbytes = (byte)(switchvalue*-1);
+                // tar vekk de bittene det ikke er plass til >>
+                buffer = (byte)(buffer | ((codeForByte>>overloadbytes)));
+                que.add(buffer); // legger til i outputten
+                // legger til de bittene det ikke var plass til
+                buffer = (byte)(codeForByte<<8-overloadbytes);
+                usedInBuffer = overloadbytes;
+                continue;
+            }
+            buffer = (byte)(buffer | (codeForByte<<switchvalue));
+            usedInBuffer +=nrOfBitsInUse;
+            if(nrOfBitsInUse >= 8){
+                que.add(buffer);
+                buffer = 0;
+                nrOfBitsInUse = 0;
+            }
+            String s1 = String.format("%8s", Integer.toBinaryString(buffer & 0xFF)).replace(' ', '0');
+            System.out.println(s1);
+        }
+        que.add(buffer);
 
+    }
 
-
+    public LinkedBlockingDeque<Byte> getQue() {
+        return que;
+    }
 }
 
 class HuffmanOnStringNode implements Comparable<HuffmanOnStringNode>{
-    private byte value;
+    private int value;
     private int nrOfUses;
-    private short code;
+    private int code;
     private HuffmanOnStringNode left;
     private HuffmanOnStringNode right;
 
@@ -122,12 +189,11 @@ class HuffmanOnStringNode implements Comparable<HuffmanOnStringNode>{
         this.code = code;
     }
 
-    public short getCode() {
-
+    public int getCode() {
         return code;
     }
 
-    public byte getValue() {
+    public int getValue() {
         return value;
     }
 

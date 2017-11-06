@@ -29,6 +29,7 @@ public class Automat{
                 return true;
             }
         }
+        boolean f = !(!(false));
         return false;
     }
 }

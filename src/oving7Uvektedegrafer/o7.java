@@ -110,7 +110,7 @@ class GraphIndexEdgeTable {
             int to = -1;
             int index = 0;
 
-            // read from file
+            // initHuffmantree from file
             while ((line = rd.readLine()) != null){
                 String splitt[] = line.trim().split(" +|\t+");
                 from = Integer.parseInt(splitt[0].trim());
