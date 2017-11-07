@@ -23,31 +23,6 @@ public class Huffman {
         return huffmantree;
     }
 
-    public void initHuffmantree(char[] lstc){
-        for(char c:lstc){
-            initHuffmantree(c);
-        }
-        makeTree();
-    }
-
-    private void initHuffmantree(char c){
-        short s = (short)c;
-        byte b1 = (byte)(s & 0b11111111);
-        //String value = Integer.toBinaryString(0xFFFF & b1);
-        //System.out.println("Byte value: " + c + " code1: " + value);
-        byte b2 = (byte)(s >> 8);
-        //value = Integer.toBinaryString(0xFFFF & b2);
-        //System.out.println("Byte value: " + c + " code2: " + value);
-        byteArray256nrOfTimesUsedInOriginalFile[b1]++;
-        byteArray256nrOfTimesUsedInOriginalFile[b2]++;
-        if(byteArray256nrOfTimesUsedInOriginalFile[b1] > currentmaxTimesUsed){
-            currentmaxTimesUsed = byteArray256nrOfTimesUsedInOriginalFile[b1];
-        }
-        if(byteArray256nrOfTimesUsedInOriginalFile[b2] > currentmaxTimesUsed){
-            currentmaxTimesUsed = byteArray256nrOfTimesUsedInOriginalFile[b2];
-        }
-    }
-
     public void initHuffmantree(byte[] lstb){
         for(byte b:lstb){
             initHuffmantree(b);
@@ -56,7 +31,7 @@ public class Huffman {
     }
     private void initHuffmantree(byte b){
         int i = b;
-        i = i & 0b00000000000000000000000011111111 ;
+        i = i & 0b00000000000000000000000011111111 ; // converts negative byte value to positive integer value
         byteArray256nrOfTimesUsedInOriginalFile[i]++;
         if(byteArray256nrOfTimesUsedInOriginalFile[i] > currentmaxTimesUsed){
             currentmaxTimesUsed = byteArray256nrOfTimesUsedInOriginalFile[i];
@@ -65,6 +40,8 @@ public class Huffman {
 
     private void makeTree(){
         PriorityQueue<HuffmanNode> startlist = new PriorityQueue<>();
+        // makes a node of each byte value that is used and puts it an a priority que
+        // who sort the node by how many times it is used
         for (int i = 0; i < byteArray256nrOfTimesUsedInOriginalFile.length; i++) {
             if(byteArray256nrOfTimesUsedInOriginalFile[i] > 0){
                 HuffmanNode h = new HuffmanNode();
@@ -73,6 +50,7 @@ public class Huffman {
                 startlist.add(h);
             }
         }
+        // using the priority que to generate a huffman tree
         HuffmanNode root;
         while (startlist.size() > 1){
             root = new HuffmanNode();
@@ -84,16 +62,23 @@ public class Huffman {
             root.setNrOfUses(root.getLeft().getNrOfUses() + root.getRight().getNrOfUses());
             startlist.add(root);
         }
+        // updates the code value, so that the node knows itselfs code
         huffmantree = startlist.poll();
         updateCode(huffmantree.getLeft(), (short)(0b0), 1);
         updateCode(huffmantree.getRight(), (short)(0b1), 1);
         huffmantree.print("", true);
+        // puts the nodes in an hashmap, for easier access
         putToHashmap(huffmantree);
-
+        for(Integer b: byte_codes_Hashmap.keySet()){
+            String key = b.toString();
+            HuffmanNode node = byte_codes_Hashmap.get(b);
+            String value = Integer.toBinaryString(0xFFFF & node.getCode());
+            System.out.println("Byte value: " + key + " code: " + value + " nc: " + node.getNrOfBitsInCode());
+        }
     }
 
     private void putToHashmap(HuffmanNode n){
-        if(n.getValue() != 300){
+        if(n.getValue() != 300){ // ignore if the node is not a leafnode
             byte_codes_Hashmap.put(n.getValue(), n);
         }
         if(n.getLeft() != null){
@@ -108,6 +93,7 @@ public class Huffman {
         return byte_codes_Hashmap;
     }
 
+    // reqursiv update of code
     private void updateCode(HuffmanNode h, short code, int nrOfBitsInUseInCode){
         h.setCode(code);
         h.setNrOfBitsInCode(nrOfBitsInUseInCode);
@@ -120,6 +106,7 @@ public class Huffman {
     }
 
 
+    // compress char array
     public void compress(char[] lstc){
         byte[] b = new byte[lstc.length*2];
         int index = 0;
@@ -133,7 +120,23 @@ public class Huffman {
 
     }
 
+    // compress byte array
     public void compress(byte[] lstb){
+        for(int i: byteArray256nrOfTimesUsedInOriginalFile){
+            //System.out.println(i);
+            byte b = (byte)(i&0b11111111);
+            compressedData.add(b);
+            //System.out.println((byte)(i&0b11111111));
+            b = (byte)((i>>8)&0b11111111);
+            compressedData.add(b);
+            //System.out.println((byte)((i>>8)&0b11111111));
+            b = (byte)((i>>16)&0b11111111);
+            compressedData.add(b);
+            //System.out.println((byte)((i>>16)&0b11111111));
+            b = (byte)((i>>24)&0b11111111);
+            compressedData.add(b);
+            //System.out.println((byte)((i>>24)&0b11111111));
+        }
         HuffmanNode node;
         int codeForByte;
         byte nrOfBitsInUse;
@@ -147,10 +150,6 @@ public class Huffman {
             }
             codeForByte = node.getCode();
             nrOfBitsInUse = (byte)node.getNrOfBitsInCode();
-            // if(codeForByte == 0){
-                //     usedInBuffer++;
-                //     continue;
-                // }
             byte switchvalue = (byte)(8-usedInBuffer-nrOfBitsInUse);
             if(switchvalue < 0){
                 // finner ut hvor mange bit man trenger i neste byte
@@ -158,6 +157,14 @@ public class Huffman {
                 // tar vekk de bittene det ikke er plass til >>
                 buffer = (byte)(buffer | ((codeForByte>>overloadbytes)));
                 compressedData.add(buffer); // legger til i outputten
+                // viss man har en kode som enda er over 8 bit, legges de til
+                while (overloadbytes > 8){
+                    buffer = (byte)((codeForByte>>(overloadbytes-8) & 0b11111111));
+                    compressedData.add(buffer); // legger til i outputten
+                    usedInBuffer = 0;
+                    overloadbytes -= 8;
+                }
+                if(overloadbytes == 0) continue;
                 // legger til de bittene det ikke var plass til
                 buffer = (byte)(codeForByte<<8-overloadbytes);
                 usedInBuffer = overloadbytes;
@@ -168,37 +175,32 @@ public class Huffman {
             if(nrOfBitsInUse >= 8){
                 compressedData.add(buffer);
                 buffer = 0;
-                nrOfBitsInUse = 0;
             }
-            //String s1 = String.format("%8s", Integer.toBinaryString(buffer & 0xFF)).replace(' ', '0');
-            //System.out.println(s1);
         }
         compressedData.add(buffer);
 
     }
 
-    public ArrayList<Byte> decompress(byte[] lstb){
-        ArrayList<Byte> out = new ArrayList<>();
-        HuffmanNode h = huffmantree;
-        //h.print("", true);
-        for (int i = 0; i < lstb.length; i++) {
-            byte currentInByte = (byte)(lstb[i]&0xFF);
-            for (byte j = 0; j < 8; j++) {
-                byte bitStatus = (byte)(0b10000000 & (currentInByte<<j));
-                if(bitStatus == 0){
-                    h = h.getLeft();
-                } else {
-                    h = h.getRight();
-                }
-                if(h.getLeft() == null && h.getRight() == null){
-                    out.add((byte)h.getValue());
-                    h = huffmantree;
-                }
-
-            }
-        }
-        return out;
-    }
+    // public ArrayList<Byte> decompress(byte[] lstb){
+    //     ArrayList<Byte> out = new ArrayList<>();
+    //     HuffmanNode h = huffmantree;
+    //     for (int i = 1024; i < lstb.length; i++) {
+    //         byte currentInByte = (byte)(lstb[i]&0xFF);
+    //         for (byte j = 0; j < 8; j++) {
+    //             byte bitStatus = (byte)(0b10000000 & (currentInByte<<j));
+    //             if(bitStatus == 0){
+    //                 h = h.getLeft();
+    //             } else {
+    //                 h = h.getRight();
+    //             }
+    //             if(h.getLeft() == null && h.getRight() == null){
+    //                 out.add((byte)h.getValue());
+    //                 h = huffmantree;
+    //             }
+    //         }
+    //     }
+    //     return out;
+    // }
 
 
 
@@ -287,7 +289,7 @@ class HuffmanNode implements Comparable<HuffmanNode>{
         String s2 = String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace(' ', '0');
         String s = "(Nr:" + nrOfUses + "c:" + s1 + "v:" + s2 + "nru:" + nrOfBitsInCode + "ch:" + (char)(value&0xFF) +")";
         if(left != null){
-            s += "\n L" + left.toString();
+            s += ", L" + left.toString();
         }
         if(right != null){
             s += ", R" + right.toString();
