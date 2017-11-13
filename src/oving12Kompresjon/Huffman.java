@@ -14,6 +14,7 @@ public class Huffman {
     private int currentmaxTimesUsed = 0;
     private HashMap<Integer, HuffmanNode> byte_codes_Hashmap = new HashMap<>();
     private LinkedBlockingDeque<Byte> compressedData = new LinkedBlockingDeque<>();
+    private static int NOTLEAFNODE = 300;
 
     public Huffman() {
         byteArray256nrOfTimesUsedInOriginalFile = new int[256];
@@ -58,7 +59,7 @@ public class Huffman {
             HuffmanNode r = startlist.poll();
             root.setLeft(l);
             root.setRight(r);
-            root.setValue(300);
+            root.setValue(Huffman.NOTLEAFNODE);
             root.setNrOfUses(root.getLeft().getNrOfUses() + root.getRight().getNrOfUses());
             startlist.add(root);
         }
@@ -78,7 +79,7 @@ public class Huffman {
     }
 
     private void putToHashmap(HuffmanNode n){
-        if(n.getValue() != 300){ // ignore if the node is not a leafnode
+        if(n.getValue() != Huffman.NOTLEAFNODE){ // ignore if the node is not a leafnode
             byte_codes_Hashmap.put(n.getValue(), n);
         }
         if(n.getLeft() != null){
@@ -103,6 +104,13 @@ public class Huffman {
         if(h.getRight() != null){
             updateCode(h.getRight(), (short)((code<<1)+0b1), nrOfBitsInUseInCode+1);
         }
+    }
+
+    public void initHuffmantree(char c){
+        int index1 = (byte)(c & 0b0000000011111111);
+        int index2 = (byte)(c >> 8);
+        byteArray256nrOfTimesUsedInOriginalFile[index1]++;
+        byteArray256nrOfTimesUsedInOriginalFile[index2]++;
     }
 
 
