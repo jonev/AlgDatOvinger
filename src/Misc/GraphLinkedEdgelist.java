@@ -116,7 +116,6 @@ public class GraphLinkedEdgelist{
                 nodelst.get(i).setIndex(i);
             }
 
-            // initHuffmantree from file
             while ((line = rd.readLine()) != null){
                 String splitt[] = line.trim().split(" +|\t+");
                 int from = Integer.parseInt(splitt[0]);

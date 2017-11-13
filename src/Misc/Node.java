@@ -6,15 +6,18 @@ import java.util.LinkedList;
  * @author jonev on 14.10.2017.
  */
 public class Node implements Comparable<Node>{
-    private int dist = 1000000;
+    private long dist = Long.MAX_VALUE;
     private String nodename;
     private int index = -1;
     private String predecessor = "No one";
+    private int intPredecessor = -1;
     private LinkedList<Edge> edges;
     private Node next;
     private boolean found;
-    private double longitude;
-    private double latitude;
+    private double radlongitude;
+    private double radlatitude;
+    private double cosLat;
+    private long distanceToEnd;
 
     public Node(String nodename, int dist){
         this.nodename = nodename;
@@ -45,11 +48,20 @@ public class Node implements Comparable<Node>{
         return predecessor;
     }
 
+    public void setPredecessor(String predecessor, int pred) {
+        this.predecessor = predecessor;
+        this.intPredecessor = pred;
+    }
+
     public void setPredecessor(String predecessor) {
         this.predecessor = predecessor;
     }
 
-    public void setDist(int dist) {
+    public int getIntPredecessor() {
+        return intPredecessor;
+    }
+
+    public void setDist(long dist) {
         this.dist = dist;
     }
 
@@ -57,7 +69,7 @@ public class Node implements Comparable<Node>{
         this.index = index;
     }
 
-    public int getDist() {
+    public long getDist() {
         return dist;
     }
 
@@ -90,24 +102,37 @@ public class Node implements Comparable<Node>{
         return nodename + " - " + next.getNodeList();
     }
     public void setLongLat(double longitude, double latitude){
-        this.longitude = longitude;
-        this.latitude = latitude;
+        this.radlongitude = longitude;
+        this.radlatitude = latitude;
+        cosLat = Math.cos(latitude);
     }
 
-    public double getLongitude() {
-        return longitude;
+    public long getDistanceToEnd() {
+        return distanceToEnd;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setDistanceToEnd(long distanceToEnd) {
+        this.distanceToEnd = distanceToEnd;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public double getCosLat() {
+        return cosLat;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public double getRadlongitude() {
+        return radlongitude;
+    }
+
+    public void setRadlongitude(double radlongitude) {
+        this.radlongitude = radlongitude;
+    }
+
+    public void setRadlatitude(double radlatitude) {
+        this.radlatitude = radlatitude;
+    }
+
+    public double getRadlatitude() {
+        return radlatitude;
     }
 
     @Override

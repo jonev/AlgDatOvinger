@@ -66,7 +66,7 @@ public class Heap {
         return nodes[index].getPredecessor();
     }
 
-    public int getDist(int i){
+    public long getDist(int i){
         if(typeMin){
             return (i < nrOfNodeIn) ? nodes[i].getDist() : Integer.MAX_VALUE;
         }else {
