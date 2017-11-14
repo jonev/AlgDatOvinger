@@ -144,6 +144,10 @@ public class GraphLinkedEdgelist{
     }
 
     public ArrayList<Node> getNodelst() {
+        //ArrayList<Node> out = new ArrayList<>();
+        //for (Node n : nodelst){
+        //    out.add(new Node(n));
+        //}
         return nodelst;
     }
 

@@ -19,6 +19,21 @@ public class Node implements Comparable<Node>{
     private double cosLat;
     private long distanceToEnd;
 
+    public Node(Node n) {
+        this.dist = n.dist;
+        this.nodename = n.nodename;
+        this.index = n.index;
+        this.predecessor = n.predecessor;
+        this.intPredecessor = n.intPredecessor;
+        this.edges = n.edges;
+        this.next = n.next;
+        this.found = n.found;
+        this.radlongitude = n.radlongitude;
+        this.radlatitude = n.radlatitude;
+        this.cosLat = n.cosLat;
+        this.distanceToEnd = n.distanceToEnd;
+    }
+
     public Node(String nodename, int dist){
         this.nodename = nodename;
         edges = new LinkedList<>();
